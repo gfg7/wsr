@@ -8,12 +8,7 @@ namespace WebAPIFramework.Repository
 {
     public class MockRepository : IRepository<string>
     {
-        private static List<string> list;
-
-        public MockRepository()
-        {
-            list = new List<string>();
-        }
+        private static List<string> list = new List<string>();
 
         public Task<string> AddItem(string item)
         {
@@ -23,9 +18,10 @@ namespace WebAPIFramework.Repository
             return Task.Run(() => item);
         }
 
+
         public Task<string> DeleteByIndex(int i)
         {
-            if (i > list.Count)
+            if (i >= list.Count)
                 throw new NotImplementedException();
             var item = list.ElementAt(i);
             list.RemoveAt(i);
@@ -43,7 +39,7 @@ namespace WebAPIFramework.Repository
 
         public Task<string> GetByIndex(int i)
         {
-            if (i > list.Count)
+            if (i >= list.Count)
                 throw new NotImplementedException();
             return Task.Run(() => list.ElementAt(i));
         }
@@ -52,7 +48,7 @@ namespace WebAPIFramework.Repository
         {
             if (!list.Contains(item))
                 throw new NotImplementedException();
-            if (i != list.Count + 1)
+            if (i >= list.Count)
                 throw new NotImplementedException();
             DeleteByIndex(i);
             list.Add(item);
@@ -63,7 +59,7 @@ namespace WebAPIFramework.Repository
 
         public Task<string> AddOnIndex(string item, int i)
         {
-            if (i != list.Count + 1)
+            if (i >= list.Count)
                 throw new NotImplementedException();
             list.Add(item);
             return Task.Run(() => item);

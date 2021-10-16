@@ -12,7 +12,7 @@ namespace WebAPIFramework.Controllers
 {
     public class ValuesController : ApiController
     {
-        IRepository<string> repository;
+        private IRepository<string> repository;
 
         public ValuesController(IRepository<string> repository)
         {
@@ -24,19 +24,17 @@ namespace WebAPIFramework.Controllers
             repository = new MockRepository();
         }
 
-        // GET api/values
         public async Task<IHttpActionResult> Get()
         {
             return Ok(await repository.GetAll());
         }
         
-        public async Task<IHttpActionResult> Get(string filter)
+        public async Task<IHttpActionResult> Get([FromUri] string filter)
         {
             return Ok(await repository.GetAll(filter));
         }
 
-        // GET api/values/5
-        public async Task<IHttpActionResult> Get(int i)
+        public async Task<IHttpActionResult> Get([FromUri] int i)
         {
             try
             {
@@ -48,9 +46,8 @@ namespace WebAPIFramework.Controllers
             }
         }
 
-        // POST api/values
         [HttpPost]
-        public async Task<IHttpActionResult> Add(string item)
+        public async Task<IHttpActionResult> Add([FromBody] string item)
         {
             try
             {
@@ -63,7 +60,7 @@ namespace WebAPIFramework.Controllers
         }
 
         [HttpPost, ActionName("idx")]
-        public async Task<IHttpActionResult> AddOnIndex(string item, int i)
+        public async Task<IHttpActionResult> AddOnIndex([FromBody] string item, [FromUri] int i)
         {
             try
             {
@@ -75,9 +72,8 @@ namespace WebAPIFramework.Controllers
             }
         }
 
-        // PUT api/values/5
         [HttpPut]
-        public async Task<IHttpActionResult> Update(int i,  string item)
+        public async Task<IHttpActionResult> Update([FromUri] int i, [FromBody] string item)
         {
             try
             {
@@ -89,8 +85,7 @@ namespace WebAPIFramework.Controllers
             }
         }
 
-        // DELETE api/values/5
-        public async Task<IHttpActionResult> Delete(string item)
+        public async Task<IHttpActionResult> Delete([FromBody] string item)
         {
             try
             {
@@ -102,9 +97,8 @@ namespace WebAPIFramework.Controllers
             }
         }
 
-        // DELETE api/values/5
         [HttpDelete, ActionName("idx")]
-        public async Task<IHttpActionResult> DeleteByIndex(int i)
+        public async Task<IHttpActionResult> DeleteByIndex([FromUri] int i)
         {
             try
             {
